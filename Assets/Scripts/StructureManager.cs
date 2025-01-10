@@ -1,39 +1,59 @@
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StructureManager : MonoBehaviour {
-    public static StructureManager Instance { get; private set; }
+    [SerializeField] private GridManager _gridManager;
 
-    [SerializeField] private List<Structure> _structures = new List<Structure>();
+ 
+    [SerializeField] private Button _houseButton;
+    [SerializeField] private Button _farmButton;
+    [SerializeField] private Button _windmillButton;
+    [SerializeField] private Button _workshopButton;
 
-    private void Awake() {
-        if (Instance != null && Instance != this) {
-            Destroy(gameObject);
-        } else {
-            Instance = this;
+  
+    [SerializeField] private GameObject _housePrefab;
+    [SerializeField] private GameObject _farmPrefab;
+    [SerializeField] private GameObject _windmillPrefab;
+    [SerializeField] private GameObject _workshopPrefab;
+
+    private GameObject _currentGhostStructure;
+
+    void Start() {
+        
+        _houseButton.onClick.AddListener(() => SetCurrentStructurePrefab(_housePrefab));
+        _farmButton.onClick.AddListener(() => SetCurrentStructurePrefab(_farmPrefab));
+        _windmillButton.onClick.AddListener(() => SetCurrentStructurePrefab(_windmillPrefab));
+        _workshopButton.onClick.AddListener(() => SetCurrentStructurePrefab(_workshopPrefab));
+    }
+
+    
+    public void SetCurrentStructurePrefab(GameObject structurePrefab) {
+        if (_currentGhostStructure != null) {
+            Destroy(_currentGhostStructure); 
+        }
+
+        _currentGhostStructure = Instantiate(structurePrefab, Vector3.zero, Quaternion.identity); 
+        _currentGhostStructure.GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 0.5f); 
+
+    void Update() {
+       
+        if (_currentGhostStructure != null) {
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePos.z = 0f; 
+            _currentGhostStructure.transform.position = new Vector3(Mathf.Floor(mousePos.x), Mathf.Floor(mousePos.y), 0f);
+        }
+
+        
+        if (_currentGhostStructure != null && Input.GetMouseButtonDown(0)) {
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 gridPos = new Vector2(Mathf.Floor(mousePos.x), Mathf.Floor(mousePos.y));
+
+            Tile tile = _gridManager.GetTileAtPosition(gridPos);
+            if (tile != null && tile.CanPlaceStructure()) {
+                tile.PlaceStructure(_currentGhostStructure); 
+                _currentGhostStructure = null; 
+            }
         }
     }
-
-    public void AddStructure(Structure structure) {
-        if (!_structures.Contains(structure)) {
-            _structures.Add(structure);
-            Debug.Log($"Structure {structure.name} added to StructureManager.");
-        }
-    }
-
-    public void RemoveStructure(Structure structure) {
-        if (_structures.Contains(structure)) {
-            _structures.Remove(structure);
-            Debug.Log($"Structure {structure.name} removed from StructureManager.");
-        }
-    }
-
-    public List<Structure> GetAllStructures() {
-        return _structures;
-    }
-
-    public void ClearStructures() {
-        _structures.Clear();
-        Debug.Log("All structures cleared from StructureManager.");
-    }
+}
 }

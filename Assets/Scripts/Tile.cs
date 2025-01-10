@@ -1,29 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Tile : MonoBehaviour {
-    [SerializeField] private Color _baseColor, _offsetColor, _unlockedColor; // Add unlocked color
+    [SerializeField] private Color _baseColor, _offsetColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
-
-    private bool _isUnlocked = false; // Track if tile is unlocked
+    [SerializeField] private GameObject _structureOnTile; 
 
     public void Init(bool isOffset) {
-        // Set the base or offset color based on the isOffset parameter
         _renderer.color = isOffset ? _offsetColor : _baseColor;
     }
 
-    public void UnlockTile() {
-        if (!_isUnlocked) {
-            _isUnlocked = true;
-            _renderer.color = _unlockedColor; // Change the color to indicate the tile is unlocked
-            Debug.Log("Tile Unlocked: " + gameObject.name);
-        }
+    // strucute plaats check
+    public bool CanPlaceStructure() {
+        return _structureOnTile == null; 
     }
 
-    public bool IsUnlocked() {
-        return _isUnlocked;
+   
+    public void PlaceStructure(GameObject structure) {
+        if (CanPlaceStructure()) {
+            _structureOnTile = Instantiate(structure, transform.position, Quaternion.identity);
+        }
     }
 
     void OnMouseEnter() {
