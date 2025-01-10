@@ -3,14 +3,10 @@ using UnityEngine.UI;
 
 public class StructureManager : MonoBehaviour {
     [SerializeField] private GridManager _gridManager;
-
-   
     [SerializeField] private Button _houseButton;
     [SerializeField] private Button _farmButton;
     [SerializeField] private Button _windmillButton;
     [SerializeField] private Button _workshopButton;
-
-  
     [SerializeField] private GameObject _housePrefab;
     [SerializeField] private GameObject _farmPrefab;
     [SerializeField] private GameObject _windmillPrefab;
@@ -19,46 +15,40 @@ public class StructureManager : MonoBehaviour {
     private GameObject _currentGhostStructure;
 
     void Start() {
-      
         _houseButton.onClick.AddListener(() => SetCurrentStructurePrefab(_housePrefab));
         _farmButton.onClick.AddListener(() => SetCurrentStructurePrefab(_farmPrefab));
         _windmillButton.onClick.AddListener(() => SetCurrentStructurePrefab(_windmillPrefab));
         _workshopButton.onClick.AddListener(() => SetCurrentStructurePrefab(_workshopPrefab));
     }
 
-   
     public void SetCurrentStructurePrefab(GameObject structurePrefab) {
         if (_currentGhostStructure != null) {
-            Destroy(_currentGhostStructure); 
+            Destroy(_currentGhostStructure);
         }
 
-        _currentGhostStructure = Instantiate(structurePrefab, Vector3.zero, Quaternion.identity); 
-        _currentGhostStructure.GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 0.5f); 
+        _currentGhostStructure = Instantiate(structurePrefab, Vector3.zero, Quaternion.identity);
+        _currentGhostStructure.GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 0.5f);
     }
 
     void Update() {
-  
         if (_currentGhostStructure != null) {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
-            mousePos.z = 0f; 
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePos.z = 0f;
 
-         
             Vector2 gridPos = new Vector2(Mathf.Floor(mousePos.x), Mathf.Floor(mousePos.y));
             _currentGhostStructure.transform.position = new Vector3(gridPos.x, gridPos.y, 0f);
-
-            
-            Debug.Log($"Ghost structure position: {gridPos}");
         }
 
-    
         if (_currentGhostStructure != null && Input.GetMouseButtonDown(0)) {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 gridPos = new Vector2(Mathf.Floor(mousePos.x), Mathf.Floor(mousePos.y));
 
             Tile tile = _gridManager.GetTileAtPosition(gridPos);
             if (tile != null && tile.CanPlaceStructure()) {
-                tile.PlaceStructure(_currentGhostStructure); 
-                _currentGhostStructure = null; 
+                tile.PlaceStructure(_currentGhostStructure);
+                _currentGhostStructure = null;
+            } else {
+                Debug.Log("Can't place structure here: Tile is occupied or invalid.");
             }
         }
     }
