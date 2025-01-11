@@ -27,7 +27,12 @@ public class StructureManager : MonoBehaviour {
         }
 
         _currentGhostStructure = Instantiate(structurePrefab, Vector3.zero, Quaternion.identity);
-        _currentGhostStructure.GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 0.5f);
+        var renderer = _currentGhostStructure.GetComponent<Renderer>();
+        if (renderer != null) {
+            renderer.material.color = new Color(1f, 1f, 1f, 0.5f);
+        } else {
+            Debug.LogWarning("Structure prefab does not have a Renderer component for ghosting.");
+        }
     }
 
     void Update() {
@@ -37,18 +42,15 @@ public class StructureManager : MonoBehaviour {
 
             Vector2 gridPos = new Vector2(Mathf.Floor(mousePos.x), Mathf.Floor(mousePos.y));
             _currentGhostStructure.transform.position = new Vector3(gridPos.x, gridPos.y, 0f);
-        }
 
-        if (_currentGhostStructure != null && Input.GetMouseButtonDown(0)) {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 gridPos = new Vector2(Mathf.Floor(mousePos.x), Mathf.Floor(mousePos.y));
-
-            Tile tile = _gridManager.GetTileAtPosition(gridPos);
-            if (tile != null && tile.CanPlaceStructure()) {
-                tile.PlaceStructure(_currentGhostStructure);
-                _currentGhostStructure = null;
-            } else {
-                Debug.Log("Can't place structure here: Tile is occupied or invalid.");
+            if (Input.GetMouseButtonDown(0)) {
+                Tile tile = _gridManager.GetTileAtPosition(gridPos);
+                if (tile != null && tile.CanPlaceStructure()) {
+                    tile.PlaceStructure(_currentGhostStructure);
+                    _currentGhostStructure = null;
+                } else {
+                    Debug.Log("Can't place structure here: Tile is occupied or invalid.");
+                }
             }
         }
     }

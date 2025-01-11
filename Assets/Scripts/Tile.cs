@@ -4,7 +4,7 @@ public class Tile : MonoBehaviour {
     [SerializeField] private Color _baseColor, _offsetColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
-    [SerializeField] private GameObject _structureOnTile;
+    private GameObject _structureOnTile;
 
     public void Init(bool isOffset) {
         _renderer.color = isOffset ? _offsetColor : _baseColor;
