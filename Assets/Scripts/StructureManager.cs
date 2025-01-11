@@ -31,7 +31,7 @@ public class StructureManager : MonoBehaviour {
         if (renderer != null) {
             renderer.material.color = new Color(1f, 1f, 1f, 0.5f);
         } else {
-            Debug.LogWarning("Structure prefab does not have a Renderer component for ghosting.");
+            Debug.LogWarning("Structure prefab heeft geen renderer");
         }
     }
 
@@ -49,7 +49,7 @@ public class StructureManager : MonoBehaviour {
                     tile.PlaceStructure(_currentGhostStructure);
                     _currentGhostStructure = null;
                 } else {
-                    Debug.Log("Can't place structure here: Tile is occupied or invalid.");
+                    Debug.Log("Kan hier niks Bouwen, of uit de border of er staat al iets");
                 }
             }
         }
