@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7525669661753327952}
   - component: {fileID: 4799727030770396351}
+  - component: {fileID: -3893202747197923739}
   m_Layer: 0
   m_Name: Workshop
   m_TagString: Untagged
@@ -87,3 +88,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-3893202747197923739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5073368524823573250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1b4e433ad8447b4989eb9b92d7e352a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: Work

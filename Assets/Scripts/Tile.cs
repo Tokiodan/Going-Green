@@ -17,6 +17,7 @@ public class Tile : MonoBehaviour {
     public void PlaceStructure(GameObject structure) {
         if (CanPlaceStructure()) {
             _structureOnTile = Instantiate(structure, transform.position, Quaternion.identity);
+            structure.GetComponent<Building>().AddToList();
         }
     }
 

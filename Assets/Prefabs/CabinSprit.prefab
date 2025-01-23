@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8382398069254349546}
   - component: {fileID: 6448873395167457237}
+  - component: {fileID: -441898640714960504}
   m_Layer: 0
   m_Name: CabinSprit
   m_TagString: Untagged
@@ -87,3 +88,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-441898640714960504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2600220076154689051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1b4e433ad8447b4989eb9b92d7e352a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: House
