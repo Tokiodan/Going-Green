@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using NUnit.Framework;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -13,11 +14,11 @@ public class ResourceManager : MonoBehaviour
     public TextMeshProUGUI polution;
 
     [Header("hoeveelheid resources")]
-    [SerializeField] private float totalMoney;
-    [SerializeField] private float totalFood;
-    [SerializeField] private float totalPopulation;
-    [SerializeField] private float totalPower;
-    [SerializeField] private float totalPolution;
+    [SerializeField] public float totalMoney;
+    [SerializeField] public float totalFood;
+    [SerializeField] public float totalPopulation;
+    [SerializeField] public float totalPower;
+    [SerializeField] public float totalPolution;
 
     [Header("resource generatie")]
     [SerializeField] private int moneyGeneration;
@@ -41,6 +42,12 @@ public class ResourceManager : MonoBehaviour
         workShops.Clear();
         windMills.Clear();
         CountResourceGeneration("all");
+
+        totalMoney = 20;
+        totalFood = 5;
+        totalPopulation = 1;
+        totalPower = 0;
+        totalPolution = 1000;
     }
 
     // Update is called once per frame
@@ -58,11 +65,13 @@ public class ResourceManager : MonoBehaviour
         }else if (type == "House" || type == "all")
         {
             houses.Add((houses.Count + 1));
+            totalPopulation += 2;
             CountResourceGeneration(type);
         }
         else if (type == "Work" || type == "all")
         {
             workShops.Add((workShops.Count + 1));
+            totalPopulation -= 5;
             CountResourceGeneration(type);
         }
         else if (type == "Mill" || type == "all")
@@ -88,7 +97,6 @@ public class ResourceManager : MonoBehaviour
             populationGeneration = 0;
             foreach (int house in houses)
             {
-                totalPopulation += 2;
                 populationGeneration += 0.2f; //food consumption staat onderaan in UpdateResources
             }
         }
@@ -97,8 +105,7 @@ public class ResourceManager : MonoBehaviour
             moneyGeneration = 0;
             foreach (int shop in workShops)
             {
-                moneyGeneration += 3;
-                totalPopulation -= 5; //power consumption staat onderaan in UpdateResources
+                moneyGeneration += 3; //power consumption staat onderaan in UpdateResources
             }
         }
         else if (type == "Mill" || type == "all")
@@ -113,28 +120,35 @@ public class ResourceManager : MonoBehaviour
 
     public void UpdateResources()
     {
-        totalFood += (foodGeneration - totalPopulation) * Time.deltaTime ;  // Afronden naar 1 decimaal
+        totalFood += (foodGeneration - totalPopulation + 1) * Time.deltaTime;  
         if(totalFood < 0) totalFood = 0 ;
-        food.text = (Mathf.Floor(totalFood)).ToString();
+        food.text = (Mathf.Floor(totalFood)).ToString(); // Afronden naar 1 decimaal
 
-        totalMoney += moneyGeneration * Time.deltaTime;  // Afronden naar 1 decimaal
+        totalMoney += moneyGeneration * Time.deltaTime;  
         money.text = (Mathf.Floor(totalMoney)).ToString();
 
-        if(totalFood <= 0)
+        if(totalFood <= 0) // zodat je niet zonder gevolgen mensen kan blijven aanmaken
         {
-            totalPopulation -= populationGeneration * Time.deltaTime;  // Afronden naar 1 decimaal
+            totalPopulation -= populationGeneration * Time.deltaTime;  
         }
         else
         {
-            totalPopulation += populationGeneration * Time.deltaTime;  // Afronden naar 1 decimaal
+            totalPopulation += populationGeneration * Time.deltaTime;  
         }
         population.text = (Mathf.Floor(totalPopulation)).ToString();
 
 
-        totalPower += (powerGeneration - (workShops.Count * 3)) * Time.deltaTime;  // Afronden naar 1 decimaal
+        totalPower += (powerGeneration - (workShops.Count * 3)) * Time.deltaTime; 
+        if(totalPower < 0) // zodat je niet zonder gevolgen WorkShops kan blijven aanmaken
+        {
+            totalPower = 0 ;
+            GameObject value = GameObject.FindGameObjectWithTag("Work");
+            Destroy(value);
+            totalPopulation += 5;
+        }
         power.text = (Mathf.Floor(totalPower)).ToString();
 
-        totalPolution += polutionGeneration * Time.deltaTime;  // Afronden naar 1 decimaal
+        totalPolution += polutionGeneration * Time.deltaTime;  
         polution.text = (Mathf.Floor(totalPolution)).ToString();
 
     }

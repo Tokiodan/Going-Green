@@ -5,9 +5,11 @@ public class Tile : MonoBehaviour {
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
     private GameObject _structureOnTile;
+    private ResourceManager resourceManager;
 
     public void Init(bool isOffset) {
         _renderer.color = isOffset ? _offsetColor : _baseColor;
+        resourceManager = GameObject.FindAnyObjectByType<ResourceManager>();
     }
 
     public bool CanPlaceStructure() {
@@ -16,8 +18,36 @@ public class Tile : MonoBehaviour {
 
     public void PlaceStructure(GameObject structure) {
         if (CanPlaceStructure()) {
-            _structureOnTile = Instantiate(structure, transform.position, Quaternion.identity);
-            structure.GetComponent<Building>().AddToList();
+            bool canplace = true;
+            if(structure.tag == "Food" && resourceManager.totalMoney >= 10)
+            {
+                resourceManager.totalMoney -= 10;
+            }else if (structure.tag == "House" && resourceManager.totalFood >= 10)
+            {
+                resourceManager.totalFood -= 10;
+            }
+            else if (structure.tag == "Work" && resourceManager.totalPopulation >= 5)
+            {
+                resourceManager.totalPopulation -= 5;
+            }
+            else if (structure.tag == "Mill" && resourceManager.totalPopulation >= 2 && resourceManager.totalFood >= 5)
+            {
+                resourceManager.totalFood -= 5;
+                resourceManager.totalPopulation -= 2;
+            }
+            else
+            {
+                canplace = false;
+                Destroy(structure);
+                Debug.Log("You don't have the resources to build this structure");
+                return;
+            }
+            if (canplace)
+            {
+                _structureOnTile = Instantiate(structure, transform.position, Quaternion.identity);
+                structure.GetComponent<Building>().AddToList();
+                resourceManager.UpdateResources();
+            }
         }
     }
 
