@@ -40,7 +40,7 @@ public class StructureManager : MonoBehaviour {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0f;
 
-            Vector2 gridPos = new Vector2(Mathf.Floor(mousePos.x), Mathf.Floor(mousePos.y));
+            Vector2 gridPos = new Vector2(Mathf.Round(mousePos.x), Mathf.Round(mousePos.y));
             _currentGhostStructure.transform.position = new Vector3(gridPos.x, gridPos.y, 0f);
 
             if (Input.GetMouseButtonDown(0)) {
