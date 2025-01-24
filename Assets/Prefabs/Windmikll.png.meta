@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 30230eba08ace274dbbb93b660014cb9
+guid: 1ad061118e6be0f4eaa388be66f30638
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6743024233415356852
-    second: power_0
+      213: 3643475523996117562
+    second: Windmikll_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: power_0
+      name: Windmikll_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 225
-        height: 225
+        x: 5
+        y: 12
+        width: 27
+        height: 28
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c4e4d6f8f27fb62a0800000000000000
-      internalID: -6743024233415356852
+      spriteID: a3a6e936fa9309230800000000000000
+      internalID: 3643475523996117562
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      power_0: -6743024233415356852
+      Windmikll_0: 3643475523996117562
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
