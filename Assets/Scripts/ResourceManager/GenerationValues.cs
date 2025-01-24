@@ -15,6 +15,11 @@ public class GenerationValues : MonoBehaviour
     private void Update()
     {
         UpdateValues();
+        if (manager.totalPolution <= 0)
+        {
+            Debug.Log("You win");
+            Time.timeScale = 0;
+        }
     }
 
     public void UpdateValues()
