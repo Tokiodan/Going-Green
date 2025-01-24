@@ -21,11 +21,11 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] public float totalPolution;
 
     [Header("resource generatie")]
-    [SerializeField] private int moneyGeneration;
-    [SerializeField] private int foodGeneration;
-    [SerializeField] private float populationGeneration;
-    [SerializeField] private int powerGeneration;
-    [SerializeField] private int polutionGeneration;
+    [SerializeField] public int moneyGeneration;
+    [SerializeField] public int foodGeneration;
+    [SerializeField] public float populationGeneration;
+    [SerializeField] public int powerGeneration;
+    [SerializeField] public int polutionGeneration;
 
     [Header("Houd bij hoeveel gebouwen er zijn")]
     public List<int> cornFarms = new List<int>(); // Lijst van CornFarms die food genereren
